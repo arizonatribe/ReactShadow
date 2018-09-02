@@ -1,4 +1,14 @@
 {
-  "presets": ["react", "env", "stage-0"],
+  "presets": [
+    [
+      "env",
+      {
+        "modules": false,
+        "loose": true
+      }
+    ],
+    "react",
+    "stage-0"
+  ],
   "plugins": ["ramda"]
 }

@@ -1,4 +1,4 @@
-import { get as fetch } from 'axios';
+import axios from 'axios';
 import React, { Component, PureComponent, Children } from 'react';
 import PropTypes from 'prop-types';
 import { render, findDOMNode, unmountComponentAtNode } from 'react-dom';
@@ -39,7 +39,7 @@ const throwError = message => {
  * @return {Promise}
  */
 const fetchInclude = memoize(document => {
-    return fetch(document).then(response => response.data).catch(() => '');
+    return axios.get(document).then(response => response.data).catch(() => '');
 });
 
 /**
@@ -237,11 +237,11 @@ export const withContext = contextTypes => {
         attachIncludes(include) {
 
             // Group all of the includes by their extension.
-            const groupedFiles = groupBy(file => file.extension)(include.map(path => ({ path, extension: path.split('.').pop() })));
+            const groupedFiles = groupBy(file => file.extension)(include.map(filePath => ({ filePath, extension: filePath.split('.').pop() })));
             const includeFiles = Object.keys(groupedFiles).map(extension => {
 
                 const nodeData = includeMap.find(model => model.extensions.includes(extension));
-                const files = groupedFiles[extension].map(model => model.path);
+                const files = groupedFiles[extension].map(model => model.filePath);
 
                 !nodeData && throwError(`Files with extension of "${extension}" are unsupported`);
 
